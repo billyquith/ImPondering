@@ -1,5 +1,7 @@
 
 build*/
+bin/
+lib/
 
 *~
 .~*
@@ -7,6 +9,9 @@ build*/
 *.swp
 Thumbs.db
 
+*.exe
+*.ilk
+*.pdb
 *.lib
 *.dll
 *.dylib
