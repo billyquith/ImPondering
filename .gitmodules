@@ -1,0 +1,6 @@
+[submodule "deps/imgui"]
+	path = deps/imgui
+	url = https://github.com/ocornut/imgui.git
+[submodule "deps/ponder"]
+	path = deps/ponder
+	url = https://github.com/billyquith/ponder.git
