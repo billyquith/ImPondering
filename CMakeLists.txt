@@ -21,4 +21,5 @@ make_directory(${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 set(IMP_IMGUI_DIR ${IMP_SOURCE_DIR}/deps/imgui)
 set(IMP_PONDER_DIR ${IMP_SOURCE_DIR}/deps/ponder)
 
+add_subdirectory(deps/ponder)
 add_subdirectory(sample)
