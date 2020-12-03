@@ -26,7 +26,7 @@ struct Vec2
 
 struct Random 
 {
-    std::mt19937 rand; // 32-bit random Mersienne Twister generator.
+    std::mt19937 rand; // 32-bit Mersienne Twister random number generator.
 
     unsigned uint() { return rand(); }
     
@@ -41,8 +41,7 @@ struct Random
 
     Vec2 vec2() { return { onef(), onef() }; }
     
-    Vec2 polar()
-    {
+    Vec2 polar() {
         const float rad = onef() * kPi2;
         return { cosf(rad), sinf(rad) };
     }
@@ -61,7 +60,7 @@ struct Actor
 
 struct Behaviour
 {
-    enum class Type { Flocking };
+    enum class Type { Random };
 
     virtual ~Behaviour() {}
     virtual void enter(Scene& s) {}
@@ -85,9 +84,11 @@ static Scene g_scene;
 
 struct RandomBehaviour final : Behaviour
 {
+    float velscale{ 100.f };
+
     void randomise(Actor& a)
     {
-        a.vel = g_rand.vec2() * 200.f - Vec2(100.f, 100.f);
+        a.vel = g_rand.vec2() * velscale - Vec2(velscale) * 0.5f;
         a.param[0] = g_rand.rangef(2.f, 5.f);
     }
 
@@ -160,6 +161,7 @@ void Scene::draw()
 // Need to declare these in the top/global namespace.
 PONDER_TYPE(eg::Vec2);
 PONDER_TYPE(eg::Actor);
+PONDER_TYPE(eg::RandomBehaviour);
 
 namespace eg {
 
@@ -177,6 +179,10 @@ void init(Init const& in)
     Class::declare<Actor>()
         .property("pos", &Actor::pos)
         .property("vel", &Actor::vel)
+        ;
+
+    Class::declare<RandomBehaviour>()
+        .property("velocityScale", &RandomBehaviour::velscale)
         ;
 
     g_scene.init(in);

@@ -16,6 +16,7 @@ namespace impo {
 
 namespace impo {
 
+// Display infomation about everything registered with Ponder.
 void showMetadata()
 {
     ImGui::Begin("ImPo Metadata");
@@ -26,7 +27,9 @@ void showMetadata()
         {
             for (const auto& prop : cls.properties())
             {
-                ImGui::Text(prop.name().data());
+                const char cr = prop.isReadable() ? 'R' : '.';
+                const char cw = prop.isWritable() ? 'W' : '.';
+                ImGui::Text("%10s : %c%c %s", prop.name().data(), cr, cw, ponder::detail::valueKindAsString(prop.kind()));
             }
             for (const auto& func : cls.functions())
             {
