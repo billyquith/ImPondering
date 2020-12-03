@@ -9,6 +9,28 @@ namespace impo {
 
     void showMetadata();
 
+    class Editor
+    {
+    public:
+        Editor();
+        ~Editor();
+
+        template <typename T>
+        void edit(T& obj);
+    };
+
+    template <typename T>
+    inline void Editor::edit(T& obj)
+    {
+        const ponder::Class& cls{ ponder::classByType<T>() };
+        ponder::UserObject uobj(&obj);
+
+        for (const auto& prop : cls.properties())
+        {
+            ponder::Value val = prop.get(uobj);
+            ImGui::Text("%s = %s", prop.name().data(), val.to<std::string>().data());
+        }
+    }
 } // namespace impo
 
 
@@ -41,7 +63,16 @@ void showMetadata()
     ImGui::End();
 }
 
-} // namespace impo
+Editor::Editor()
+{
+    ImGui::Begin("Editor");
+}
 
+Editor::~Editor()
+{
+    ImGui::End();
+}
+
+} // namespace impo
 
 #endif // IMPO_IMPLEMENTATION

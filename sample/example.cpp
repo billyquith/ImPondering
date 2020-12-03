@@ -60,6 +60,9 @@ struct Actor
 
 struct Behaviour
 {
+    PONDER_POLYMORPHIC();
+public:
+
     enum class Type { Random };
 
     virtual ~Behaviour() {}
@@ -78,6 +81,7 @@ struct Scene
     void init(const Init&);
     void update(const Update&);
     void draw();
+    Behaviour& currBehaviour() { return *behaves[behaveIndex]; }
 };
 
 static Scene g_scene;
@@ -123,12 +127,12 @@ void Scene::init(Init const& in)
     screenMax = screenSize - screenMin;
     behaves.emplace_back(std::make_unique<RandomBehaviour>());
     actors.resize(50);
-    behaves[behaveIndex]->enter(*this);
+    currBehaviour().enter(*this);
 }
 
 void Scene::update(Update const& up)
 {
-    behaves[behaveIndex]->update(up, *this);
+    currBehaviour().update(up, *this);
 }
 
 static bool show_canvas = true;
@@ -161,6 +165,7 @@ void Scene::draw()
 // Need to declare these in the top/global namespace.
 PONDER_TYPE(eg::Vec2);
 PONDER_TYPE(eg::Actor);
+PONDER_TYPE(eg::Behaviour);
 PONDER_TYPE(eg::RandomBehaviour);
 
 namespace eg {
@@ -181,7 +186,10 @@ void init(Init const& in)
         .property("vel", &Actor::vel)
         ;
 
+    Class::declare<Behaviour>();
+
     Class::declare<RandomBehaviour>()
+        .base<Behaviour>()
         .property("velocityScale", &RandomBehaviour::velscale)
         ;
 
@@ -200,6 +208,11 @@ bool update(const Update& up)
         ImGui::SetWindowCollapsed("Dear ImGui Demo", true);
 
     impo::showMetadata();
+
+    {
+        impo::Editor ed;
+        ed.edit(dynamic_cast<RandomBehaviour&>(g_scene.currBehaviour())); // Hmmm
+    }
 
     return true;
 }
