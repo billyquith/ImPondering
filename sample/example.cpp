@@ -1,6 +1,7 @@
 
 
 #include "example.h"
+#define IMPO_IMPLEMENTATION
 #include "imponder.h"
 #include <random>
 #include <math.h>
@@ -154,14 +155,30 @@ void Scene::draw()
     ImGui::End();
 }
 
-#ifdef NDEBUG
-static bool show_demo_window = false;
-#else
+}
+
+// Need to declare these in the top/global namespace.
+PONDER_TYPE(eg::Vec2);
+PONDER_TYPE(eg::Actor);
+
+namespace eg {
+
 static bool show_demo_window = true;
-#endif
 
 void init(Init const& in)
 {
+    using namespace ponder;
+
+    Class::declare<Vec2>()
+        .property("x", &Vec2::x)
+        .property("y", &Vec2::y)
+        ;
+
+    Class::declare<Actor>()
+        .property("pos", &Actor::pos)
+        .property("vel", &Actor::vel)
+        ;
+
     g_scene.init(in);
 }
 
@@ -175,6 +192,8 @@ bool update(const Update& up)
 
     if (up.frameNum == 0)
         ImGui::SetWindowCollapsed("Dear ImGui Demo", true);
+
+    impo::showMetadata();
 
     return true;
 }

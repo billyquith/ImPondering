@@ -21,4 +21,4 @@ include_directories(${USER_LOCAL}/include ${IMP_SOURCE_DIR}/include ${IMP_PONDER
 link_directories(AFTER ${USER_LOCAL}/lib)
 
 add_executable(ImPonderSample ${SOURCES})
-target_link_libraries(ImPonderSample PRIVATE SDL2::SDL2 SDL2::SDL2main gl3w)
+target_link_libraries(ImPonderSample PRIVATE SDL2::SDL2 SDL2::SDL2main gl3w ponder)
