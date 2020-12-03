@@ -20,9 +20,19 @@ void showMetadata()
 {
     ImGui::Begin("ImPo Metadata");
 
-    for (const auto& cls : ponder::classIterator())
+    for (const auto& cls : ponder::classes())
     {
-        ImGui::Text(cls.second->name().data());
+        if (ImGui::CollapsingHeader(cls.name().data(), ImGuiTreeNodeFlags_None))
+        {
+            for (const auto& prop : cls.properties())
+            {
+                ImGui::Text(prop.name().data());
+            }
+            for (const auto& func : cls.functions())
+            {
+                ImGui::Text(func.name().data());
+            }
+        }
     }
 
     ImGui::End();
