@@ -2,7 +2,6 @@
 
 cmake_minimum_required(VERSION 3.4)
 
-# we require C++11 - this set appropriate flags for compilers, which may not be portable
 set(CMAKE_CXX_STANDARD 17)
 
 project(ImPondering)
@@ -22,4 +21,4 @@ set(IMP_IMGUI_DIR ${IMP_SOURCE_DIR}/deps/imgui)
 set(IMP_PONDER_DIR ${IMP_SOURCE_DIR}/deps/ponder)
 
 add_subdirectory(deps/ponder)
-add_subdirectory(sample)
+add_subdirectory(src)
